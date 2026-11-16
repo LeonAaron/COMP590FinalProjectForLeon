@@ -1,0 +1,4 @@
+job,agent,task,split,trial,reward,hidden_passed,hidden_total,regression_passed,regression_total,input_tokens,cached_tokens,output_tokens,total_tokens,turns,agent_seconds,trial_seconds,cost_usd,exception,infra_error
+baseline_shellagent_eval_v3_1,leoa_ShellAgent,leoa_stock3_personal-dashboard,heldout,leoa_stock3_personal-dashboard__unYo7ns,0.9474,54,57,14,14,221082,189842,12911,233993,14,100.7,174.0,,,0
+baseline_shellagent_eval_v3_1,leoa_ShellAgent,leoa_stock3_power-tools,heldout,leoa_stock3_power-tools__h3Njx2z,1.0,69,69,14,14,175491,155276,11551,187042,14,99.3,172.7,,,0
+baseline_shellagent_eval_v3_1,leoa_ShellAgent,leoa_stock3_price-insights,heldout,leoa_stock3_price-insights__VJ2iiqT,0.8966,52,58,14,14,143726,119943,9328,153054,13,78.6,142.9,,,0
