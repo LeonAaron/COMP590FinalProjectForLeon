@@ -124,12 +124,14 @@ def summarize(rows: list[dict]) -> None:
         sd = statistics.stdev(values) if len(values) > 1 else 0.0
         return f"{mean * 100:5.1f}% +/-{sd * 100:4.1f}" if pct else f"{mean:9.0f} +/-{sd:7.0f}"
 
-    print(f"\n{'agent':18} {'split':8} {'n':>3}  {'reward (mean +/- sd)':>18}  {'full pass':>9}  "
+    # Primary metric: full-pass rate (share of trials where every hidden + regression test passed).
+    print(f"\n{'agent':18} {'split':8} {'n':>3}  {'FULL-PASS RATE':>16}  {'mean reward (+/- sd)':>20}  "
           f"{'tokens/trial':>18}  {'agent sec':>16}")
     for (agent, split), rs in sorted(groups.items()):
         rewards = [r["reward"] for r in rs]
         full = sum(1 for r in rs if r["reward"] == 1.0)
-        print(f"{agent:18} {split:8} {len(rs):3}  {fmt(rewards, pct=True):>18}  {full:4}/{len(rs):<4}  "
+        rate = f"{full}/{len(rs)} ({full / len(rs) * 100:.0f}%)"
+        print(f"{agent:18} {split:8} {len(rs):3}  {rate:>16}  {fmt(rewards, pct=True):>20}  "
               f"{fmt([r['total_tokens'] for r in rs]):>18}  {fmt([r['agent_seconds'] or 0 for r in rs]):>16}")
 
     print("\nper task (mean reward over attempts):")
