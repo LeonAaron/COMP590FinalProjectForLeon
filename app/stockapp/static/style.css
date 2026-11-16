@@ -1,0 +1,176 @@
+:root {
+  --ink: #0f172a;
+  --ink-2: #1e293b;
+  --accent: #4f46e5;
+  --accent-soft: #eef2ff;
+  --up: #16a34a;
+  --down: #dc2626;
+  --bg: #f1f5f9;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --hairline: #f1f5f9;
+  --radius: 10px;
+  --gutter: clamp(12px, 2.5vw, 24px);
+  --page: 1180px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { overflow-x: hidden; }
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Top navigation ---------- */
+.topbar { background: linear-gradient(90deg, var(--ink) 0%, var(--ink-2) 100%); color: #fff; }
+.topbar-inner, .subbar-inner, .layout {
+  width: 100%;
+  max-width: var(--page);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+.topbar-inner { min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; }
+.brand-mark {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: linear-gradient(135deg, #818cf8 0%, #4f46e5 60%, #22c55e 100%);
+}
+.brand-name { font-weight: 650; font-size: 16px; letter-spacing: 0.2px; }
+
+.lookup { display: flex; align-items: center; gap: 10px; }
+.lookup label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #94a3b8; }
+#ticker-select {
+  width: min(300px, 60vw);
+  padding: 8px 36px 8px 12px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  appearance: none;
+  cursor: pointer;
+}
+#ticker-select option { color: var(--text); background: #fff; }
+#ticker-select:hover { border-color: #c7d2fe; }
+#ticker-select:focus { outline: 2px solid #818cf8; outline-offset: 1px; }
+
+.subbar { background: #fff; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+.subbar-inner { height: 36px; display: flex; align-items: center; gap: 8px; }
+.crumb.current { color: var(--text); font-weight: 600; }
+.crumb-sep { opacity: 0.5; }
+
+/* ---------- Layout ---------- */
+.layout {
+  margin-top: 20px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);  /* minmax(0, …) stops the chart forcing the column wider */
+  gap: 16px;
+  align-items: start;
+}
+.content { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  min-width: 0;
+}
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 18px 0; flex-wrap: wrap; }
+.panel-title { margin: 0; font-size: 12px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); }
+.panel-meta { font-size: 12px; color: var(--muted); }
+
+/* ---------- Symbol list ---------- */
+.symbols { overflow: hidden; }
+.symbols .panel-title { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); }
+#symbol-list { list-style: none; margin: 0; padding: 0; }
+.symbol-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 8px;
+  padding: 11px 16px;
+  color: inherit;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid var(--hairline);
+  transition: background 0.12s;
+}
+.symbol-row:hover { background: #f8fafc; }
+.symbol-row.active { background: var(--accent-soft); border-left-color: var(--accent); }
+.sym { font-weight: 700; }
+.sym-name { grid-row: 2; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sym-price { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* ---------- Quote header ---------- */
+.quote { padding: 18px; }
+.quote-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+#stock-name { margin: 0; font-size: clamp(18px, 2.4vw, 22px); font-weight: 650; }
+.ticker-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 6px;
+  vertical-align: middle;
+}
+.exchange { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+.quote-price { text-align: right; }
+#latest-close { display: block; font-size: clamp(24px, 3.4vw, 32px); font-weight: 650; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.as-of { color: var(--muted); font-size: 12px; }
+
+.key-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  margin: 18px 0 0;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+/* Each tile draws its own hairline; the container clips the outer edges. */
+.key-data > div { padding: 10px 14px; box-shadow: 1px 1px 0 var(--border); }
+.key-data dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+.key-data dd { margin: 4px 0 0; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- Chart ---------- */
+.ohlc-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ohlc-legend b { color: var(--text); font-weight: 600; }
+.ohlc-legend .up { color: var(--up); }
+.ohlc-legend .down { color: var(--down); }
+
+#price-chart {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 52vh, 480px);
+  margin: 10px 0 0;
+  padding: 0 6px 6px;
+}
+
+.disclaimer { margin: 0; font-size: 11px; color: var(--muted); }
+
+/* ---------- Narrow screens ---------- */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .symbols { order: 2; }
+  .quote-price { text-align: left; }
+}
+@media (max-width: 560px) {
+  .lookup { width: 100%; }
+  .lookup label { display: none; }
+  #ticker-select { width: 100%; }
+}
