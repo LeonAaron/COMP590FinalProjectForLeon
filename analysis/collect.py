@@ -29,6 +29,7 @@ DEV = {
     "leoa_stock_daily-change", "leoa_stock_watchlist", "leoa_stock_moving-average",
     # v2 (three-feature releases)
     "leoa_stock2_price-insights", "leoa_stock2_personal-dashboard",
+    "leoa_stock3_price-insights", "leoa_stock3_personal-dashboard",
 }
 
 INFRA_MARKERS = (

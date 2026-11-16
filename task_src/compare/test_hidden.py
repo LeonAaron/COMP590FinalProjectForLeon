@@ -102,7 +102,7 @@ def test_page_table_last_values(client: FlaskClient) -> None:
     assert [t for t, _ in rows] == ["META", "AAPL", "NVDA"]
     want = expected(["META", "AAPL", "NVDA"])
     for ticker, row in rows:
-        cells = [" ".join(re.sub(r"<[^>]+>", "", c).split()) for c in re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)]
+        cells = [" ".join(re.sub(r"<[^>]+>", "", c).split()) for c in re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", row, re.S)]
         assert cells == [ticker, f"{want['series'][ticker][-1]:.2f}"]
 
 

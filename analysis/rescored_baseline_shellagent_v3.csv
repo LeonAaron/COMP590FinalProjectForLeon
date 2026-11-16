@@ -1,0 +1,19 @@
+trial,task,old_reward,new_reward,hidden_passed,hidden_total,regression_passed,regression_total,failed_tests
+leoa_stock3_analytics-suite__jxv2zXR,leoa_stock3_analytics-suite,0.9153,1.0,59,59,14,14,
+leoa_stock3_analytics-suite__unAxwBG,leoa_stock3_analytics-suite,0.9153,1.0,59,59,14,14,
+leoa_stock3_analytics-suite__vDtiMr4,leoa_stock3_analytics-suite,0.9153,1.0,59,59,14,14,
+leoa_stock3_market-overview__gUf8kM9,leoa_stock3_market-overview,0.9,1.0,60,60,14,14,
+leoa_stock3_market-overview__Hbhgedn,leoa_stock3_market-overview,0.9,1.0,60,60,14,14,
+leoa_stock3_market-overview__PQg6T7q,leoa_stock3_market-overview,0.9,1.0,60,60,14,14,
+leoa_stock3_personal-dashboard__3MCyzNP,leoa_stock3_personal-dashboard,0.9649,0.9649,55,57,14,14,daily_change::test_api_change_bad_date_is_400; daily_change::test_function_first_day_raises
+leoa_stock3_personal-dashboard__3yice53,leoa_stock3_personal-dashboard,0.9474,0.9474,54,57,14,14,daily_change::test_api_change_bad_date_is_400; daily_change::test_function_first_day_raises; top_movers::test_function_bad_date
+leoa_stock3_personal-dashboard__D2YK3e5,leoa_stock3_personal-dashboard,0.9649,0.9649,55,57,14,14,daily_change::test_api_change_bad_date_is_400; daily_change::test_function_first_day_raises
+leoa_stock3_power-tools__37Lw2RH,leoa_stock3_power-tools,0.971,0.9855,68,69,14,14,price_alerts::test_ui_lists_selected_ticker_alerts
+leoa_stock3_power-tools__Bn9JJ4J,leoa_stock3_power-tools,0.9855,1.0,69,69,14,14,
+leoa_stock3_power-tools__uwoRsgw,leoa_stock3_power-tools,0.971,0.9855,68,69,14,14,price_alerts::test_invalid_create_is_400
+leoa_stock3_price-insights__LPq6E79,leoa_stock3_price-insights,0.9655,0.9655,56,58,14,14,daily_change::test_api_change_bad_date_is_400; daily_change::test_function_first_day_raises
+leoa_stock3_price-insights__NWFhBxm,leoa_stock3_price-insights,0.9483,0.9655,56,58,14,14,daily_change::test_api_change_bad_date_is_400; daily_change::test_function_first_day_raises
+leoa_stock3_price-insights__smQARtv,leoa_stock3_price-insights,0.8793,0.8966,52,58,14,14,daily_change::test_api_change_bad_date_is_400; daily_change::test_function_first_day_raises; moving_average::test_api_custom_window; moving_average::test_api_default_window; moving_average::test_function_window_20; moving_average::test_function_window_2_case_insensitive
+leoa_stock3_research-tools__7Gq6XEU,leoa_stock3_research-tools,1.0,1.0,68,68,14,14,
+leoa_stock3_research-tools__g5skv4a,leoa_stock3_research-tools,0.9853,0.9853,67,68,14,14,price_alerts::test_ui_lists_selected_ticker_alerts
+leoa_stock3_research-tools__ZFXmTAv,leoa_stock3_research-tools,1.0,1.0,68,68,14,14,

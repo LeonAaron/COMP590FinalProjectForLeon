@@ -34,6 +34,8 @@ that expect the codebase conventions below to hold everywhere.
   stylesheet, and their `<title>` is `<page name> · Stock Chart Viewer` (the page name is given with each feature).
 - **New API endpoints** (every new route under `/api/`) send the header `Cache-Control: no-store` on successful
   responses, because prices and user data must never be served stale.
+- **Server rendering**: new panels, tables and lists show their content in the HTML the server returns (JavaScript may
+  enhance the page, but the content must not depend on it).
 - **Accessibility**: every new `<table>` has a `<caption>`, and every new panel `<section>` added to a page has an
   `aria-label` describing it.
 

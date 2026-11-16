@@ -81,8 +81,13 @@ def test_api_unknown_ticker_is_404(client: FlaskClient) -> None:
 def test_ui_has_toggle_with_label(client: FlaskClient) -> None:
     html = client.get("/").get_data(as_text=True)
     assert re.search(r'<input(?=[^>]*\btype="checkbox")(?=[^>]*\bid="sma-toggle")[^>]*>', html)
-    label = re.search(r'<label[^>]*\bfor="sma-toggle"[^>]*>(.*?)</label>', html, re.S)
-    assert label and "20-day SMA" in label.group(1)
+    # Either <label for="sma-toggle">...</label> or a <label> that wraps the checkbox.
+    labels = re.findall(r"<label([^>]*)>(.*?)</label>", html, re.S)
+    assert any(
+        "20-day SMA" in re.sub(r"<[^>]+>", " ", body)
+        and (re.search(r'\bfor="sma-toggle"', attrs) or re.search(r'\bid="sma-toggle"', body))
+        for attrs, body in labels
+    )
 
 
 def test_js_requests_sma_endpoint(client: FlaskClient) -> None:

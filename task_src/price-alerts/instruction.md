@@ -9,6 +9,7 @@ Users want to set alerts such as "tell me when NVDA is above 150" and see which 
 - API: `POST /api/alerts` (body `{"ticker", "direction", "price"}`) creates one and answers 201 with the alert;
   `GET /api/alerts` lists them in creation order (optional `ticker` filter) as `{"alerts": [...]}`;
   `DELETE /api/alerts/<id>` answers 204 with an empty body.
-- UI: a `<section id="alerts">` on the main page lists the selected stock's alerts as
+- UI: a `<section id="alerts">` in the main page's server-rendered HTML (not filled in later by JavaScript) lists the
+  selected stock's alerts as
   `<li class="alert-item" data-alert-id="...">` showing e.g. `above 150.00`, with an extra `triggered` class when hit,
   or says `No alerts for <TICKER>`.

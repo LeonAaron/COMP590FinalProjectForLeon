@@ -86,7 +86,7 @@ def test_dashboard_row_values(client: FlaskClient, ticker: str) -> None:
     want = expected(ticker)
     row = re.search(rf'<tr[^>]*\bdata-ticker="{ticker}"[^>]*>(.*?)</tr>', table(client), re.S)
     assert row
-    assert [c.removeprefix("$") for c in cells(row.group(1), "td")] == [  # "$" prefix is allowed
+    assert [c.removeprefix("$") for c in cells(row.group(1), "t[hd]")] == [  # "$" prefix is allowed
         ticker,
         f"{want['last_close']:.2f}",
         f"{want['high_52w']:.2f}",

@@ -34,6 +34,8 @@ that expect the codebase conventions below to hold everywhere.
   stylesheet, and their `<title>` is `<page name> · Stock Chart Viewer` (the page name is given with each feature).
 - **New API endpoints** (every new route under `/api/`) send the header `Cache-Control: no-store` on successful
   responses, because prices and user data must never be served stale.
+- **Server rendering**: new panels, tables and lists show their content in the HTML the server returns (JavaScript may
+  enhance the page, but the content must not depend on it).
 - **Accessibility**: every new `<table>` has a `<caption>`, and every new panel `<section>` added to a page has an
   `aria-label` describing it.
 
@@ -96,6 +98,7 @@ Users want to set alerts such as "tell me when NVDA is above 150" and see which 
 - API: `POST /api/alerts` (body `{"ticker", "direction", "price"}`) creates one and answers 201 with the alert;
   `GET /api/alerts` lists them in creation order (optional `ticker` filter) as `{"alerts": [...]}`;
   `DELETE /api/alerts/<id>` answers 204 with an empty body.
-- UI: a `<section id="alerts">` on the main page lists the selected stock's alerts as
+- UI: a `<section id="alerts">` in the main page's server-rendered HTML (not filled in later by JavaScript) lists the
+  selected stock's alerts as
   `<li class="alert-item" data-alert-id="...">` showing e.g. `above 150.00`, with an extra `triggered` class when hit,
   or says `No alerts for <TICKER>`.
