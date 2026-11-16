@@ -43,15 +43,19 @@ COMMON = SRC / "_common"
 OUT = ROOT / "tasks"
 PREFIX = "leoa_stock3_"
 
-# task name -> (split, features). Dev tasks only use dev features, so nothing about the
-# held-out features leaks into development of the multi-agent harness.
+# task name -> (split, features).
+# Split swap (v3.1, before any multi-agent code existed): evaluation ("heldout") uses the
+# three releases where the single-agent baseline missed requirements; development ("dev")
+# uses the three it already solves, so tuning the team agent on dev cannot leak which
+# rules get missed. Tasks were selected on an earlier baseline run, so the evaluation
+# baseline is a fresh run (see writeup: selection vs regression to the mean).
 TASKS: dict[str, tuple[str, list[str]]] = {
-    "price-insights": ("dev", ["daily-change", "moving-average", "watchlist"]),
-    "personal-dashboard": ("dev", ["top-movers", "watchlist", "daily-change"]),
-    "analytics-suite": ("heldout", ["dashboard", "analysis-report", "csv-export"]),
+    "price-insights": ("heldout", ["daily-change", "moving-average", "watchlist"]),
+    "personal-dashboard": ("heldout", ["top-movers", "watchlist", "daily-change"]),
     "power-tools": ("heldout", ["date-range", "compare", "price-alerts"]),
-    "research-tools": ("heldout", ["analysis-report", "date-range", "price-alerts"]),
-    "market-overview": ("heldout", ["dashboard", "compare", "csv-export"]),
+    "analytics-suite": ("dev", ["dashboard", "analysis-report", "csv-export"]),
+    "research-tools": ("dev", ["analysis-report", "date-range", "price-alerts"]),
+    "market-overview": ("dev", ["dashboard", "compare", "csv-export"]),
 }
 
 IGNORE = shutil.ignore_patterns("__pycache__", ".pytest_cache", ".venv", "*.pyc")

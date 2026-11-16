@@ -29,7 +29,8 @@ DEV = {
     "leoa_stock_daily-change", "leoa_stock_watchlist", "leoa_stock_moving-average",
     # v2 (three-feature releases)
     "leoa_stock2_price-insights", "leoa_stock2_personal-dashboard",
-    "leoa_stock3_price-insights", "leoa_stock3_personal-dashboard",
+    # v3.1 after the split swap (dev = releases the baseline already solves)
+    "leoa_stock3_analytics-suite", "leoa_stock3_research-tools", "leoa_stock3_market-overview",
 }
 
 INFRA_MARKERS = (

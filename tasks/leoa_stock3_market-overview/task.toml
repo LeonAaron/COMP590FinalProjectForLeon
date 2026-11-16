@@ -4,7 +4,7 @@ artifacts = [{ source = "/app", destination = "app", exclude = ["__pycache__", "
 
 [metadata]
 category = "software-engineering"
-tags = ["python", "flask", "feature", "multi-file", "heldout"]
+tags = ["python", "flask", "feature", "multi-file", "dev"]
 difficulty = "medium"
 
 [verifier]
