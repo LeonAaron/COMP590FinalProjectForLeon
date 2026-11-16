@@ -1,0 +1,7 @@
+job,agent,task,split,trial,reward,hidden_passed,hidden_total,regression_passed,regression_total,input_tokens,cached_tokens,output_tokens,total_tokens,turns,agent_seconds,trial_seconds,cost_usd,exception,infra_error
+baseline_shellagent_v2_dev,leoa_ShellAgent,leoa_stock2_personal-dashboard,dev,leoa_stock2_personal-dashboard__8vW6CrV,0.0,0,52,14,14,0,0,0,0,0,19.6,75.0,,NonZeroAgentExitCodeError,1
+baseline_shellagent_v2_dev,leoa_ShellAgent,leoa_stock2_personal-dashboard,dev,leoa_stock2_personal-dashboard__apQHXmd,0.9423,49,52,14,14,258217,238294,10363,268580,20,101.9,150.4,,,0
+baseline_shellagent_v2_dev,leoa_ShellAgent,leoa_stock2_personal-dashboard,dev,leoa_stock2_personal-dashboard__CPWLBDL,0.9423,49,52,14,14,126797,110485,7970,134767,12,70.4,129.0,,,0
+baseline_shellagent_v2_dev,leoa_ShellAgent,leoa_stock2_price-insights,dev,leoa_stock2_price-insights__4sCibug,0.963,52,54,14,14,125518,111011,8010,133528,12,76.9,110.5,,,0
+baseline_shellagent_v2_dev,leoa_ShellAgent,leoa_stock2_price-insights,dev,leoa_stock2_price-insights__pKgEatZ,0.8704,47,54,14,14,163834,145887,10774,174608,14,86.3,133.4,,,0
+baseline_shellagent_v2_dev,leoa_ShellAgent,leoa_stock2_price-insights,dev,leoa_stock2_price-insights__yxnfsLa,0.963,52,54,14,14,259904,233480,10027,269931,16,89.6,149.0,,,0

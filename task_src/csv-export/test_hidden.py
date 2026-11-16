@@ -63,7 +63,7 @@ def test_desc_keeps_chronological_change(client: FlaskClient) -> None:
     assert rows[-1][6] == ""
 
 
-@pytest.mark.parametrize("order", ["DESC", "newest", ""])
+@pytest.mark.parametrize("order", ["newest", "reverse", ""])
 def test_bad_order_is_400(client: FlaskClient, order: str) -> None:
     get(client, "NVDA")  # endpoint exists
     resp = client.get(f"/api/stocks/NVDA/export.csv?order={order}")

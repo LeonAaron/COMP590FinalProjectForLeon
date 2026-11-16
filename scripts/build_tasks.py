@@ -3,9 +3,16 @@
     uv run --project app python scripts/build_tasks.py           # (re)build tasks/
     uv run --project app python scripts/build_tasks.py --check   # build + local oracle/nop check
 
-Each task_src/<name>/ holds instruction.md, test_hidden.py and solution.py. Everything
-else is shared (task_src/_common) or copied from app/, so every task starts from the
-identical baseline app.
+Each task_src/<feature>/ holds instruction.md, test_hidden.py and solution.py for ONE
+feature. A task (see TASKS below) bundles several features into one release: its
+instruction is the shared preamble plus each feature's description, its hidden tests are
+each feature's test file, and its reference solution applies each feature's patch in order.
+Everything else is shared (task_src/_common) or copied from app/, so every task starts
+from the identical baseline app.
+
+v1 (git history, prefix leoa_stock_) had one feature per task with fully enumerated
+edge cases; the baseline agent scored 1.0 on all of them, so v2 bundles 3 features per
+task and moves edge-case rules into shared codebase conventions.
 
 --check runs, for every task and without Docker:
   * oracle: copy app -> apply the reference solution -> score must be 1.0
@@ -28,9 +35,18 @@ APP = ROOT / "app"
 SRC = ROOT / "task_src"
 COMMON = SRC / "_common"
 OUT = ROOT / "tasks"
-PREFIX = "leoa_stock_"
+PREFIX = "leoa_stock2_"
 
-DEV = {"daily-change", "watchlist", "moving-average"}
+# task name -> (split, features). Dev tasks only use dev features, so nothing about the
+# held-out features leaks into development of the multi-agent harness.
+TASKS: dict[str, tuple[str, list[str]]] = {
+    "price-insights": ("dev", ["daily-change", "moving-average", "watchlist"]),
+    "personal-dashboard": ("dev", ["top-movers", "watchlist", "daily-change"]),
+    "analytics-suite": ("heldout", ["dashboard", "analysis-report", "csv-export"]),
+    "power-tools": ("heldout", ["date-range", "compare", "price-alerts"]),
+    "research-tools": ("heldout", ["analysis-report", "date-range", "price-alerts"]),
+    "market-overview": ("heldout", ["dashboard", "compare", "csv-export"]),
+}
 
 IGNORE = shutil.ignore_patterns("__pycache__", ".pytest_cache", ".venv", "*.pyc")
 
@@ -48,37 +64,41 @@ def write_lf(path: Path, text: str) -> None:
     path.write_bytes(text.replace("\r\n", "\n").encode("utf-8"))
 
 
-def build_task(src: Path) -> Path:
-    name = src.name
+def build_task(name: str) -> Path:
+    split, features = TASKS[name]
     task = OUT / f"{PREFIX}{name}"
     if task.exists():
         shutil.rmtree(task)
-    split = "dev" if name in DEV else "heldout"
+    read = lambda path: path.read_text(encoding="utf-8")  # noqa: E731
 
-    write_lf(task / "task.toml", (COMMON / "task.toml").read_text(encoding="utf-8").replace("{split}", split))
+    write_lf(task / "task.toml", read(COMMON / "task.toml").replace("{split}", split))
     write_lf(
         task / "instruction.md",
-        (COMMON / "preamble.md").read_text(encoding="utf-8") + (src / "instruction.md").read_text(encoding="utf-8"),
+        read(COMMON / "preamble.md")
+        + "\n\n".join(read(SRC / f / "instruction.md").strip() for f in features)
+        + "\n",
     )
 
-    write_lf(task / "environment" / "Dockerfile", (COMMON / "Dockerfile").read_text(encoding="utf-8"))
+    write_lf(task / "environment" / "Dockerfile", read(COMMON / "Dockerfile"))
     copy_app(task / "environment" / "app")
 
     tests = task / "tests"
-    write_lf(tests / "test.sh", (COMMON / "test.sh").read_text(encoding="utf-8"))
-    write_lf(tests / "score.py", (COMMON / "score.py").read_text(encoding="utf-8"))
-    write_lf(tests / "conftest.py", (APP / "tests" / "conftest.py").read_text(encoding="utf-8"))
+    write_lf(tests / "test.sh", read(COMMON / "test.sh"))
+    write_lf(tests / "score.py", read(COMMON / "score.py"))
+    write_lf(tests / "conftest.py", read(APP / "tests" / "conftest.py"))
     for original in sorted((APP / "tests").glob("test_*.py")):
-        write_lf(tests / f"test_regression_{original.name[5:]}", original.read_text(encoding="utf-8"))
-    write_lf(tests / "test_hidden.py", (src / "test_hidden.py").read_text(encoding="utf-8"))
+        write_lf(tests / f"test_regression_{original.name[5:]}", read(original))
 
     sol = task / "solution"
-    write_lf(
-        sol / "solve.sh",
-        '#!/bin/bash\nset -euo pipefail\ncd "$(dirname "$0")"\npython3 solution.py\n',
-    )
-    write_lf(sol / "solution.py", (src / "solution.py").read_text(encoding="utf-8"))
-    write_lf(sol / "patchlib.py", (COMMON / "patchlib.py").read_text(encoding="utf-8"))
+    write_lf(sol / "solve.sh", '#!/bin/bash\nset -euo pipefail\ncd "$(dirname "$0")"\npython3 solution.py\n')
+    write_lf(sol / "patchlib.py", read(COMMON / "patchlib.py"))
+    runner = ["import runpy", ""]
+    for feature in features:
+        module = feature.replace("-", "_")
+        write_lf(tests / f"test_hidden_{module}.py", read(SRC / feature / "test_hidden.py"))
+        write_lf(sol / f"sol_{module}.py", read(SRC / feature / "solution.py"))
+        runner.append(f'runpy.run_path("sol_{module}.py")')
+    write_lf(sol / "solution.py", "\n".join(runner) + "\n")
     return task
 
 
@@ -130,15 +150,15 @@ def check(task: Path) -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="validate oracle=1 and nop=0 locally")
-    parser.add_argument("names", nargs="*", help="only these task_src names")
+    parser.add_argument("names", nargs="*", help=f"only these tasks (default all: {', '.join(TASKS)})")
     args = parser.parse_args()
 
-    sources = sorted(p for p in SRC.iterdir() if p.is_dir() and not p.name.startswith("_"))
-    if args.names:
-        sources = [p for p in sources if p.name in args.names]
-    tasks = [build_task(src) for src in sources]
-    print(f"built {len(tasks)} task(s) in {OUT.relative_to(ROOT)}/")
-    if args.check and not all([check(t) for t in tasks]):
+    names = args.names or list(TASKS)
+    if not args.names and OUT.exists():
+        shutil.rmtree(OUT)  # full rebuild: drop tasks that are no longer defined
+    built = [build_task(name) for name in names]
+    print(f"built {len(built)} task(s) in {OUT.relative_to(ROOT)}/")
+    if args.check and not all([check(t) for t in built]):
         sys.exit(1)
 
 

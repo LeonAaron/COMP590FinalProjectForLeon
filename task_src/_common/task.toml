@@ -1,5 +1,6 @@
 schema_version = "1.4"
-artifacts = []
+# Copy the agent-modified app out of the container so each run's result can be inspected.
+artifacts = [{ source = "/app", destination = "app", exclude = ["__pycache__", ".pytest_cache"] }]
 
 [metadata]
 category = "software-engineering"

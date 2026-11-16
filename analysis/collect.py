@@ -6,7 +6,12 @@
 One row per trial. Columns:
   job, agent, task, split (dev/heldout), trial, reward, hidden_passed, hidden_total,
   regression_passed, regression_total, input_tokens, cached_tokens, output_tokens,
-  total_tokens, turns, agent_seconds, trial_seconds, cost_usd, exception
+  total_tokens, turns, agent_seconds, trial_seconds, cost_usd, exception, infra_error
+
+Trials that died because the model gateway failed (HTTP 5xx, rate limit, connection or
+timeout errors from the OpenAI client) are flagged infra_error=1. They say nothing about
+the agent's ability, so the summary excludes them and reports how many there were; they
+should be rerun. They stay in the CSV so nothing is silently dropped.
 """
 
 from __future__ import annotations
@@ -19,12 +24,22 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-DEV = {"leoa_stock_daily-change", "leoa_stock_watchlist", "leoa_stock_moving-average"}
+DEV = {
+    # v1 (single-feature tasks)
+    "leoa_stock_daily-change", "leoa_stock_watchlist", "leoa_stock_moving-average",
+    # v2 (three-feature releases)
+    "leoa_stock2_price-insights", "leoa_stock2_personal-dashboard",
+}
+
+INFRA_MARKERS = (
+    "InternalServerError", "RateLimitError", "APIConnectionError", "APITimeoutError",
+    "ServiceUnavailable", "Error code: 5",
+)
 
 FIELDS = [
     "job", "agent", "task", "split", "trial", "reward", "hidden_passed", "hidden_total",
     "regression_passed", "regression_total", "input_tokens", "cached_tokens", "output_tokens",
-    "total_tokens", "turns", "agent_seconds", "trial_seconds", "cost_usd", "exception",
+    "total_tokens", "turns", "agent_seconds", "trial_seconds", "cost_usd", "exception", "infra_error",
 ]
 
 
@@ -83,10 +98,20 @@ def trial_row(job: Path, trial: Path, prices: tuple[float, float, float] | None)
         "trial_seconds": seconds(result),
         "cost_usd": cost,
         "exception": (exc or {}).get("exception_type") if isinstance(exc, dict) else (exc or ""),
+        "infra_error": int(
+            isinstance(exc, dict)
+            and any(m in (exc.get("exception_message") or "") for m in INFRA_MARKERS)
+        ),
     }
 
 
 def summarize(rows: list[dict]) -> None:
+    infra = [r for r in rows if r["infra_error"]]
+    if infra:
+        print(f"\nexcluded {len(infra)} trial(s) lost to model-gateway errors (rerun these):")
+        for r in infra:
+            print(f"  {r['agent']:18} {r['trial']}")
+    rows = [r for r in rows if not r["infra_error"]]
     groups: dict[tuple[str, str], list[dict]] = defaultdict(list)
     for r in rows:
         groups[(r["agent"], r["split"])].append(r)

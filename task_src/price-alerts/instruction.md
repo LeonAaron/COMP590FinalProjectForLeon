@@ -1,34 +1,14 @@
-# Feature: price alerts
+## Feature: price alerts
 
-Let users set price alerts and see whether they have been triggered by the latest close.
+Users want to set alerts such as "tell me when NVDA is above 150" and see which have been hit.
 
-## Behaviour
-
-- Alerts are kept **in memory, per app instance**: every app returned by `create_app()` starts with no alerts, and
-  alerts created through one app instance are not visible in another.
-- Each alert has: `id` (an `int`; the first alert of an app instance is `1`, then `2`, ... — ids are never reused within
-  an instance), `ticker` (normalized symbol), `direction` (`"above"` or `"below"`), `price` (a number greater than 0,
-  returned as a float) and `triggered` (bool).
-- `triggered` is computed from the **latest close** of the ticker: for `above`, latest close `>=` price; for `below`,
-  latest close `<=` price.
-
-## API (`stockapp/routes.py`)
-
-All responses are JSON unless noted.
-
-- `POST /api/alerts` with body `{"ticker": "nvda", "direction": "above", "price": 150}` creates an alert and returns it
-  with status **201**.
-  Status **400** with an `"error"` key when: the body is not a JSON object; `ticker` is missing, not a string or unknown;
-  `direction` is not exactly `"above"` or `"below"`; `price` is missing, not a number (booleans and strings are not
-  numbers), or not greater than 0.
-- `GET /api/alerts` returns `{"alerts": [...]}` in creation order. Optional `ticker` query parameter filters to one
-  ticker (case-insensitive); an unknown ticker in the filter is status 400 with an `"error"` key.
-- `DELETE /api/alerts/<id>` deletes the alert and returns status **204** with an empty body; status **404** with an
-  `"error"` key if there is no alert with that id.
-
-## UI
-
-Add a panel `<section id="alerts">` to the main page listing the alerts **for the selected ticker**. Each alert is an
-`<li class="alert-item" data-alert-id="<id>">` that shows the direction and the price with 2 decimals
-(e.g. `above 150.00`), and also has the class `triggered` when the alert is triggered. When the selected ticker has no
-alerts, the panel shows the text `No alerts for <TICKER>` (e.g. `No alerts for NVDA`).
+- Alerts live in memory and belong to one app instance (`create_app()` starts with none; instances never share
+  alerts). Each has an integer `id` (1, 2, 3, ... per instance, never reused), `ticker`, `direction` (`above` or
+  `below`), a positive `price`, and `triggered`, which is true when the latest close is at or beyond the price in that
+  direction.
+- API: `POST /api/alerts` (body `{"ticker", "direction", "price"}`) creates one and answers 201 with the alert;
+  `GET /api/alerts` lists them in creation order (optional `ticker` filter) as `{"alerts": [...]}`;
+  `DELETE /api/alerts/<id>` answers 204 with an empty body.
+- UI: a `<section id="alerts">` on the main page lists the selected stock's alerts as
+  `<li class="alert-item" data-alert-id="...">` showing e.g. `above 150.00`, with an extra `triggered` class when hit,
+  or says `No alerts for <TICKER>`.

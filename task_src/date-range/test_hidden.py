@@ -73,7 +73,7 @@ def test_api_empty_range_is_200(client: FlaskClient) -> None:
 
 @pytest.mark.parametrize(
     "query",
-    ["start=2026-02-30", "end=yesterday", "start=2026-06-01&end=2026-05-01", "range=2Y", "range=1m",
+    ["start=2026-02-30", "end=yesterday", "start=2026-06-01&end=2026-05-01", "range=2Y",
      "range=1M&start=2026-01-05"],
 )
 def test_api_bad_params_are_400(client: FlaskClient, query: str) -> None:
