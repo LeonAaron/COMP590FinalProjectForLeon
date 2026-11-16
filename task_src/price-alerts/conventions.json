@@ -1,0 +1,8 @@
+{
+  "api": [
+    "/api/alerts"
+  ],
+  "sections": [
+    "alerts"
+  ]
+}

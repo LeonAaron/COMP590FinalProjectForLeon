@@ -1,0 +1,9 @@
+{
+  "api": [
+    "/api/stocks/NVDA/report.md"
+  ],
+  "pages": {
+    "/report/NVDA": "NVDA Analysis Report",
+    "/report/meta": "META Analysis Report"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "api": [
+    "/api/summary",
+    "/api/compare?tickers=NVDA,MSFT",
+    "/api/stocks/NVDA/export.csv"
+  ],
+  "pages": {
+    "/dashboard": "Dashboard",
+    "/compare": "Compare"
+  },
+  "tables": {
+    "/dashboard": "summary-table",
+    "/compare": "compare-table"
+  },
+  "sections": []
+}

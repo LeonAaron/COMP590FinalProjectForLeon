@@ -1,0 +1,14 @@
+{
+  "api": [
+    "/api/stocks/NVDA/report.md",
+    "/api/alerts"
+  ],
+  "pages": {
+    "/report/NVDA": "NVDA Analysis Report",
+    "/report/meta": "META Analysis Report"
+  },
+  "tables": {},
+  "sections": [
+    "alerts"
+  ]
+}

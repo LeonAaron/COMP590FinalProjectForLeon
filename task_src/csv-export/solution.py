@@ -42,3 +42,7 @@ insert_before(
     LEGEND,
     '          <a id="export-link" href="/api/stocks/{{ selected }}/export.csv" download>Export CSV</a>\n',
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()

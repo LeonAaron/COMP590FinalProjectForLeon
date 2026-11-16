@@ -57,7 +57,7 @@ write(
       <div class="layout" style="grid-template-columns: minmax(0, 1fr)">
         <section class="panel" style="padding: 18px; overflow-x: auto">
           <h3 class="panel-title">Market Summary</h3>
-          <table id="summary-table">
+          <table id="summary-table"><caption>Market summary for all tracked stocks</caption>
             <thead><tr><th>Symbol</th><th>Last Close</th><th>52W High</th><th>52W Low</th><th>Avg Volume</th><th>1Y Return</th><th>Volatility</th></tr></thead>
             <tbody>
               {% for r in rows %}
@@ -77,3 +77,7 @@ insert_after(
     '      <span class="crumb current">{{ selected }}</span>\n',
     '      <a class="crumb" href="/dashboard" style="margin-left:auto">Dashboard</a>\n',
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()

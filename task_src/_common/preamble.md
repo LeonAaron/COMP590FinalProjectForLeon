@@ -30,7 +30,12 @@ that expect the codebase conventions below to hold everywhere.
   decimals, and signed changes always carry an explicit sign (`+1.20`, `-0.35%`, zero shown as `+0.00`).
 - **Annualized volatility** is the sample standard deviation of daily log returns `ln(close_t / close_{t-1})`, times
   `sqrt(252)`, times 100.
-- New pages reuse the main page's header and stylesheet so they look like part of the same app.
+- **New pages** reuse the main page's header (`<header class="topbar">` containing the `brand` link back to `/`) and
+  stylesheet, and their `<title>` is `<page name> · Stock Chart Viewer` (the page name is given with each feature).
+- **New API endpoints** (every new route under `/api/`) send the header `Cache-Control: no-store` on successful
+  responses, because prices and user data must never be served stale.
+- **Accessibility**: every new `<table>` has a `<caption>`, and every new panel `<section>` added to a page has an
+  `aria-label` describing it.
 
 ---
 

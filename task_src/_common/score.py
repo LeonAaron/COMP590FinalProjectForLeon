@@ -22,8 +22,10 @@ def score(junit: Path) -> dict[str, float | int]:
     counts = {"hidden": [0, 0], "regression": [0, 0]}
     if junit.is_file():
         for case in ET.parse(junit).iter("testcase"):
+            if any(child.tag == "skipped" for child in case):
+                continue  # e.g. an empty parametrize set; neither passed nor failed
             group = "regression" if "test_regression" in case.get("classname", "") else "hidden"
-            failed = any(child.tag in ("failure", "error", "skipped") for child in case)
+            failed = any(child.tag in ("failure", "error") for child in case)
             counts[group][1] += 1
             counts[group][0] += 0 if failed else 1
     hidden_frac = counts["hidden"][0] / counts["hidden"][1] if counts["hidden"][1] else 0.0

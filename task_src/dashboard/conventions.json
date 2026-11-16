@@ -1,0 +1,11 @@
+{
+  "api": [
+    "/api/summary"
+  ],
+  "pages": {
+    "/dashboard": "Dashboard"
+  },
+  "tables": {
+    "/dashboard": "summary-table"
+  }
+}

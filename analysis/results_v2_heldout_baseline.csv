@@ -1,0 +1,13 @@
+job,agent,task,split,trial,reward,hidden_passed,hidden_total,regression_passed,regression_total,input_tokens,cached_tokens,output_tokens,total_tokens,turns,agent_seconds,trial_seconds,cost_usd,exception,infra_error
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_analytics-suite,heldout,leoa_stock2_analytics-suite__cLcfV6o,0.898,44,49,14,14,104801,88572,7980,112781,11,70.2,139.7,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_analytics-suite,heldout,leoa_stock2_analytics-suite__ePbytb3,0.898,44,49,14,14,191987,173841,8585,200572,15,91.0,198.4,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_analytics-suite,heldout,leoa_stock2_analytics-suite__zzvyB5p,0.898,44,49,14,14,127221,111833,8344,135565,12,86.8,194.0,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_market-overview,heldout,leoa_stock2_market-overview__jGTrJJF,0.902,46,51,14,14,123852,106788,9185,133037,11,98.1,198.8,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_market-overview,heldout,leoa_stock2_market-overview__SfRmyfc,0.902,46,51,14,14,117738,102518,7743,125481,12,80.2,175.3,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_market-overview,heldout,leoa_stock2_market-overview__wXaqKf7,0.902,46,51,14,14,207546,186703,10330,217876,15,95.2,173.7,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_power-tools,heldout,leoa_stock2_power-tools__e2zPTrL,0.9524,60,63,14,14,125371,103205,9091,134462,11,99.2,179.3,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_power-tools,heldout,leoa_stock2_power-tools__qHA9DRe,0.9524,60,63,14,14,244984,220047,12951,257935,16,129.6,212.4,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_power-tools,heldout,leoa_stock2_power-tools__upVMcPS,1.0,63,63,14,14,123205,106813,10031,133236,12,104.9,199.4,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_research-tools,heldout,leoa_stock2_research-tools__KFEQBUB,1.0,61,61,14,14,238546,216780,11072,249618,17,108.4,198.8,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_research-tools,heldout,leoa_stock2_research-tools__pjB527P,1.0,61,61,14,14,226196,204849,11727,237923,16,112.4,193.0,,,0
+baseline_shellagent_v2_heldout,leoa_ShellAgent,leoa_stock2_research-tools,heldout,leoa_stock2_research-tools__VhxQkzg,1.0,61,61,14,14,150683,131493,9970,160653,13,84.9,158.1,,,0

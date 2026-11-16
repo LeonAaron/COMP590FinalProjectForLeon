@@ -1,0 +1,5 @@
+{
+  "api": [
+    "/api/stocks/NVDA/export.csv"
+  ]
+}

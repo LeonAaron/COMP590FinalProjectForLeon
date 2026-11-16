@@ -93,7 +93,7 @@ append(
 insert_before(
     TEMPLATE,
     DISCLAIMER,
-    """      <section id="watchlist" class="panel">
+    """      <section id="watchlist" class="panel" aria-label="Your watchlist">
         <div class="panel-head"><h3 class="panel-title">Watchlist</h3></div>
         {% if watchlist %}
         <ul class="watchlist-items">
@@ -108,3 +108,7 @@ insert_before(
 
 """,
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()

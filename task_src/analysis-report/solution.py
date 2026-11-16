@@ -91,7 +91,7 @@ write(
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>{{ ticker }} Report · Stock Chart Viewer</title>
+      <title>{{ ticker }} Analysis Report · Stock Chart Viewer</title>
       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
@@ -114,3 +114,7 @@ insert_after(
     '            <p class="exchange">NASDAQ · USD</p>\n',
     '            <a id="report-link" href="/report/{{ selected }}">Analysis report</a>\n',
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()

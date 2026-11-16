@@ -64,7 +64,7 @@ write(
         <section class="panel" style="padding: 18px">
           <h3 class="panel-title">Relative performance (start = 100)</h3>
           <div id="compare-chart" data-tickers="{{ result.tickers|join(',') }}" style="height: 400px"></div>
-          <table id="compare-table">
+          <table id="compare-table"><caption>Final rebased value per stock</caption>
             <thead><tr><th>Symbol</th><th>Last value</th></tr></thead>
             <tbody>
               {% for t in result.tickers %}
@@ -98,3 +98,7 @@ insert_after(
     '      <span class="crumb current">{{ selected }}</span>\n',
     '      <a class="crumb" href="/compare" style="margin-left:auto">Compare</a>\n',
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()

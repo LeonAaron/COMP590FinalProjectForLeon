@@ -1,0 +1,11 @@
+{
+  "api": [
+    "/api/compare?tickers=NVDA,MSFT"
+  ],
+  "pages": {
+    "/compare": "Compare"
+  },
+  "tables": {
+    "/compare": "compare-table"
+  }
+}

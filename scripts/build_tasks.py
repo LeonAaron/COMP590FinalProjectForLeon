@@ -14,6 +14,12 @@ v1 (git history, prefix leoa_stock_) had one feature per task with fully enumera
 edge cases; the baseline agent scored 1.0 on all of them, so v2 bundles 3 features per
 task and moves edge-case rules into shared codebase conventions.
 
+v2 (prefix leoa_stock2_): with fair grading the baseline passed every held-out release;
+its only real misses (dev) were rules stated once in the shared conventions. v3 (this
+version, prefix leoa_stock3_) adds codebase-wide conventions (no-store API caching, page
+titles, shared header, table captions, panel aria-labels) checked on every feature by
+_common/test_hidden_conventions.py, driven by each feature's conventions.json.
+
 --check runs, for every task and without Docker:
   * oracle: copy app -> apply the reference solution -> score must be 1.0
   * nop:    copy app untouched                       -> score must be 0.0
@@ -35,7 +41,7 @@ APP = ROOT / "app"
 SRC = ROOT / "task_src"
 COMMON = SRC / "_common"
 OUT = ROOT / "tasks"
-PREFIX = "leoa_stock2_"
+PREFIX = "leoa_stock3_"
 
 # task name -> (split, features). Dev tasks only use dev features, so nothing about the
 # held-out features leaks into development of the multi-agent harness.
@@ -93,12 +99,20 @@ def build_task(name: str) -> Path:
     write_lf(sol / "solve.sh", '#!/bin/bash\nset -euo pipefail\ncd "$(dirname "$0")"\npython3 solution.py\n')
     write_lf(sol / "patchlib.py", read(COMMON / "patchlib.py"))
     runner = ["import runpy", ""]
+    conventions: dict = {"api": [], "pages": {}, "tables": {}, "sections": []}
     for feature in features:
         module = feature.replace("-", "_")
         write_lf(tests / f"test_hidden_{module}.py", read(SRC / feature / "test_hidden.py"))
         write_lf(sol / f"sol_{module}.py", read(SRC / feature / "solution.py"))
         runner.append(f'runpy.run_path("sol_{module}.py")')
+        extra = json.loads(read(SRC / feature / "conventions.json"))
+        conventions["api"] += [u for u in extra.get("api", []) if u not in conventions["api"]]
+        conventions["pages"].update(extra.get("pages", {}))
+        conventions["tables"].update(extra.get("tables", {}))
+        conventions["sections"] += [s for s in extra.get("sections", []) if s not in conventions["sections"]]
     write_lf(sol / "solution.py", "\n".join(runner) + "\n")
+    write_lf(tests / "test_hidden_conventions.py", read(COMMON / "test_hidden_conventions.py"))
+    write_lf(tests / "conventions.json", json.dumps(conventions, indent=2) + "\n")
     return task
 
 

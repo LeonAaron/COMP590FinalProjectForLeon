@@ -1,0 +1,12 @@
+{
+  "api": [
+    "/api/stocks/NVDA/change",
+    "/api/stocks/NVDA/sma",
+    "/api/watchlist"
+  ],
+  "pages": {},
+  "tables": {},
+  "sections": [
+    "watchlist"
+  ]
+}

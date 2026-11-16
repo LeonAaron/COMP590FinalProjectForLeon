@@ -43,7 +43,7 @@ append(
 insert_before(
     TEMPLATE,
     DISCLAIMER,
-    """      <section id="movers" class="panel">
+    """      <section id="movers" class="panel" aria-label="Top movers">
         <div class="panel-head"><h3 class="panel-title">Top Movers</h3></div>
         <ul>
           {% for m in movers %}
@@ -54,3 +54,7 @@ insert_before(
 
 """,
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()

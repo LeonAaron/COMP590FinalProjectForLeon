@@ -1,0 +1,16 @@
+{
+  "api": [
+    "/api/summary",
+    "/api/stocks/NVDA/report.md",
+    "/api/stocks/NVDA/export.csv"
+  ],
+  "pages": {
+    "/dashboard": "Dashboard",
+    "/report/NVDA": "NVDA Analysis Report",
+    "/report/meta": "META Analysis Report"
+  },
+  "tables": {
+    "/dashboard": "summary-table"
+  },
+  "sections": []
+}

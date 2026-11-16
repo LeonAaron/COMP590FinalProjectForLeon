@@ -46,3 +46,23 @@ DISCLAIMER = '      <p class="disclaimer">'
 LATEST_CLOSE = '<strong id="latest-close">${{ "%.2f"|format(latest.close) }}</strong>'
 LEGEND = '          <div id="ohlc-legend"'
 INDEX_CONTEXT = "        symbol_list={t: latest_bar(t) for t in TICKERS},\n"
+
+
+NO_STORE_MARKER = "# convention: Cache-Control no-store on /api/ responses"
+
+
+def no_store() -> None:
+    """Add (once) an after-request hook that marks successful /api/ responses no-store."""
+    if NO_STORE_MARKER in (APP / "stockapp/routes.py").read_text(encoding="utf-8"):
+        return
+    append(
+        "stockapp/routes.py",
+        f"""
+        {NO_STORE_MARKER}
+        @bp.after_app_request
+        def _api_no_store(response):  # noqa: ANN001, ANN202
+            if request.path.startswith("/api/") and response.status_code < 400:
+                response.headers["Cache-Control"] = "no-store"
+            return response
+        """,
+    )

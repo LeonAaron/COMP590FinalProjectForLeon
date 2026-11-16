@@ -67,3 +67,7 @@ append(
     .day-change.down { color: var(--down); }
     """,
 )
+
+from patchlib import no_store  # noqa: E402
+
+no_store()
